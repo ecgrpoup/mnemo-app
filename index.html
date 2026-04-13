@@ -22,9 +22,9 @@ button,input{font-family:inherit;outline:none;border:none;background:none;color:
 .app{display:flex;flex-direction:column;height:100%;width:100%;max-width:430px;margin:0 auto;background:var(--bg);position:relative}
 .safe-top{height:env(safe-area-inset-top,44px);flex-shrink:0}
 .safe-bot{height:env(safe-area-inset-bottom,20px)}
-.screens{flex:1;overflow:hidden;position:relative;min-height:0}
-.screen{position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;overflow-x:hidden;display:none!important;padding-bottom:90px;-webkit-overflow-scrolling:touch}
-.screen.on{display:block!important}.screen.on.flex{display:flex!important;flex-direction:column}
+.screens{flex:1;overflow:hidden;position:relative}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:none;padding-bottom:90px;-webkit-overflow-scrolling:touch}
+.screen.on{display:block}
 .screen::-webkit-scrollbar{display:none}
 
 /* TAB BAR */
@@ -330,7 +330,7 @@ button,input{font-family:inherit;outline:none;border:none;background:none;color:
 </div>
 
 <!-- PROCESSING -->
-<div class="screen flex" id="sc-proc">
+<div class="screen" id="sc-proc" style="display:flex;flex-direction:column">
 <div style="padding:14px 20px 0;font-size:26px;font-weight:700;letter-spacing:-.6px">Processing...</div>
 <div style="padding:5px 20px 0;font-size:14px;color:var(--tx2)">Building your memory</div>
 <div class="proc-center">
@@ -380,7 +380,7 @@ button,input{font-family:inherit;outline:none;border:none;background:none;color:
 </div>
 
 <!-- ASK -->
-<div class="screen flex" id="sc-ask">
+<div class="screen" id="sc-ask" style="display:flex;flex-direction:column">
 <div class="ask-top">
   <div class="ask-t">Ask <em>Mnemo</em></div>
   <div class="ask-iw">
@@ -466,9 +466,9 @@ async function connectAPI(){
 function setDot(s){const d=document.getElementById('api-dot'),t=document.getElementById('api-st');d.className='api-dot'+(s==='ok'?' ok':s==='err'?' err':'');t.textContent=s==='ok'?'Connected':s==='err'?'Cannot reach backend':'Connecting...';}
 async function loadMemories(){if(!API_OK)return;try{const r=await fetch(API_BASE+'/api/memories?user_id=demo-user');const d=await r.json();memories=d.memories||[];renderAll();}catch{}}
 function goTab(tab){if(['home','library','capture','ask'].includes(curTab))prevTab=curTab;curTab=tab;
-  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('on');});
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('on');s.style.display='';});
   document.querySelectorAll('.ti').forEach(t=>t.classList.remove('on'));
-  const sc=document.getElementById('sc-'+tab);if(sc){sc.classList.add('on');}
+  const sc=document.getElementById('sc-'+tab);if(sc){sc.classList.add('on');sc.style.display='';}
   const tb=document.getElementById('t-'+tab);if(tb)tb.classList.add('on');
   if(tab==='home')renderAll();if(tab==='library')renderLib();}
 function goBack(){goTab(prevTab||'home');}
